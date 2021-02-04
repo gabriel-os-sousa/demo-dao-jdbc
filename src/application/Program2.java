@@ -1,66 +1,51 @@
 package application;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 import model.dao.DaoFactory;
-import model.dao.SellerDao;
+import model.dao.DepartmentDao;
 import model.entities.Department;
-import model.entities.Seller;
 
 public class Program2 {
 
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
-		SellerDao sellerDao = DaoFactory.createSellerDao();
+		DepartmentDao departmentDao = DaoFactory.createDepartmentDao();
+		List<Department> deps = new ArrayList<>();
 		
-		System.out.println("=== TEST 1: seller findById ===");
-		Seller seller = sellerDao.findById(3);		
-		System.out.println(seller);
+		System.out.println("=== TEST 1: dep findById ===");
+		Department dep = departmentDao.findById(2);		
+		System.out.println(dep);
 		
 		System.out.println();
 		
-		System.out.println("=== TEST 2: seller findByDep ===");
-		Department dep = new Department(2, null);
-		List<Seller> sellers = sellerDao.findByDepartment(dep);
-		for(Seller seller1: sellers) {
-			System.out.println(seller1);
+		System.out.println("=== TEST 2: dep findAll ===");
+		deps = departmentDao.findAll();
+		for(Department dep1: deps) {
+			System.out.println(dep1);
 		}
 		
-		System.out.println();
-		
-		System.out.println("=== TEST 3: seller findAll ===");
-		sellers = sellerDao.findAll();
-		for(Seller seller1: sellers) {
-			System.out.println(seller1);
-		}
+		System.out.println("=== TEST 3: insert ===");
+		Department newDep = new Department(null, "TI");
+		departmentDao.insert(newDep);
+		System.out.println("Created! New id: "+ newDep.getId());
 		
 		System.out.println();
 		
-		System.out.println("=== TEST 4: seller Insert ===");
-		/*
-		 * Seller newSeller = new Seller(null, "Gabriel", "gabrielsousa@snews.tv", new
-		 * Date(), 2696.0 , dep); sellerDao.insert(newSeller);
-		 * System.out.println("Inserted! New id = "+ newSeller.getId());
-		 * 
-		 * System.out.println();
-		 */
+		System.out.println("=== TEST 4: dep Update ===");
+		dep = departmentDao.findById(5);
+		dep.setName("TECNOLOGIA");
+		departmentDao.update(dep);
+		System.out.println("Atualizado! "+ dep);
 		
-		System.out.println("=== TEST 5: seller Update ===");
-		seller = sellerDao.findById(1);
-		seller.setName("Gabriel Oliveira");
-		seller.setBaseSalary(9995.0);
-		sellerDao.update(seller);
-		System.out.println("Atualizado! "+ seller);
-		
-		System.out.println();
-		
-		System.out.println("=== TEST 6: seller Delete ===");
-		System.out.print("Digite um Id: ");
+		System.out.println("=== TEST 5: dep delete ===");
+		System.out.print("Selecione um id para deletar: ");
 		int id = sc.nextInt();
-		sellerDao.deleteById(id);
-		System.out.println("Delete complete! "+ id);
-		
+		departmentDao.deleteById(5);
+		System.out.println("Deletado! "+ id);
+
 		sc.close();
 
 	}
